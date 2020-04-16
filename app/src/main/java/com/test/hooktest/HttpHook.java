@@ -112,7 +112,7 @@ public class HttpHook {
             }
         };
 
-        try {
+        /*try {
             final Class<?> okHttpClient = findClass("com.android.okhttp.OkHttpClient", loadPackageParam.classLoader);
             if(okHttpClient != null) {
                 findAndHookMethod(okHttpClient, "open", URI.class, new XC_MethodHook() {
@@ -127,7 +127,7 @@ public class HttpHook {
             }
         } catch (Error e) {
             LogUtils.log(e.toString());
-        }
+        }*/
 
 
         try {
@@ -135,10 +135,10 @@ public class HttpHook {
                 findAndHookMethod("libcore.net.http.HttpURLConnectionImpl", loadPackageParam.classLoader, "getOutputStream", RequestHook);
             } else {
                 //com.squareup.okhttp.internal.http.HttpURLConnectionImpl
-                final Class<?> httpURLConnectionImpl = findClass("com.android.okhttp.internal.http.HttpURLConnectionImpl", loadPackageParam.classLoader);
+                final Class<?> httpURLConnectionImpl = findClass("com.android.okhttp.internal.huc.HttpURLConnectionImpl", loadPackageParam.classLoader);
                 if(httpURLConnectionImpl != null) {
-                    findAndHookMethod("com.android.okhttp.internal.http.HttpURLConnectionImpl", loadPackageParam.classLoader, "getOutputStream", RequestHook);
-                    findAndHookMethod("com.android.okhttp.internal.http.HttpURLConnectionImpl", loadPackageParam.classLoader, "getInputStream", ResponseHook);
+                    findAndHookMethod(httpURLConnectionImpl, "getOutputStream", RequestHook);
+                    findAndHookMethod(httpURLConnectionImpl, "getInputStream", ResponseHook);
                 }
             }
         } catch (Error e) {
