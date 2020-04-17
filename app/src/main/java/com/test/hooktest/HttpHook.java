@@ -2,9 +2,10 @@ package com.test.hooktest;
 
 import android.os.Build;
 
+import com.test.hooktest.utils.LogUtils;
+
 import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -17,8 +18,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage;
 
 import static de.robv.android.xposed.XposedBridge.hookAllConstructors;
@@ -59,6 +58,7 @@ public class HttpHook {
                     StringBuilder sb = new StringBuilder();
                     boolean connected = (boolean)getObjectField(param.thisObject, "connected");
 
+                    LogUtils.log("connected=="+connected);
                     if(!connected){
 
 
