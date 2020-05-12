@@ -278,4 +278,11 @@ public class Util {
         }
         return macAddressBytes;
     }
+
+    public static void showBackTrace(){
+        StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+        for (StackTraceElement ste : stes) {
+            LogUtils.log(ste.getClassName()+ " " + ste.getMethodName()+" "+ ste.getLineNumber()+" isNativeMethod="+ste.isNativeMethod());
+        }
+    }
 }

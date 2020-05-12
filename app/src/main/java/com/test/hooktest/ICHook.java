@@ -1,6 +1,7 @@
 package com.test.hooktest;
 
 import com.test.hooktest.utils.LogUtils;
+import com.test.hooktest.utils.Util;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedHelpers;
@@ -31,8 +32,8 @@ public class ICHook {
                     @Override
                     protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
                         super.beforeHookedMethod(param);
-                        LogUtils.log("beforeHookedMethod commit " + param.args[0]+" " + param.args[1]);
-                        param.args[0] = "";
+                        LogUtils.log(TAG + " commit " + param.args[0]+" " + param.args[1]);
+//                        param.args[0] = "";
 //                        param.setResult(true);
 
                     }
@@ -44,9 +45,16 @@ public class ICHook {
                 int.class,   // 参数2
                 new XC_MethodHook() {
                     @Override
+                    protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
+                        super.beforeHookedMethod(param);
+                        LogUtils.log(TAG + "  getTextBeforeCursor " + param.args[0]+" " + param.args[1] + " result=" + param.getResult());
+                    }
+                    @Override
                     protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
                         super.afterHookedMethod(param);
-                        LogUtils.log("afterHookedMethod getTextBeforeCursor " + param.args[0]+" " + param.args[1] + " result=" + param.getResult());
+                        param.setResult(param.getResult()+"sogousogou");
+                        LogUtils.log(TAG + "  getTextBeforeCursor " + param.args[0]+" " + param.args[1] + " result=" + param.getResult());
+//                        Util.showBackTrace();
                     }
                 });
         XposedHelpers.findAndHookMethod("com.android.internal.view.InputConnectionWrapper",     // 类名
@@ -58,7 +66,7 @@ public class ICHook {
                     @Override
                     protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
                         super.afterHookedMethod(param);
-                        LogUtils.log("afterHookedMethod getTextAfterCursor " + param.args[0]+" " + param.args[1] + " result=" + param.getResult());
+                        LogUtils.log(TAG + "  getTextAfterCursor " + param.args[0]+" " + param.args[1] + " result=" + param.getResult());
                     }
                 });
         XposedHelpers.findAndHookMethod("android.os.BaseBundle",     // 类名
@@ -70,7 +78,7 @@ public class ICHook {
                     @Override
                     protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
                         super.afterHookedMethod(param);
-                        LogUtils.log("afterHookedMethod Bundle.putString " + param.args[0]+" " + param.args[1]);
+                        LogUtils.log(TAG + "  Bundle.putString " + param.args[0]+" " + param.args[1]);
                     }
                 });
     }

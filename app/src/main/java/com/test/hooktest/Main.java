@@ -22,7 +22,15 @@ public class Main implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
         ICHook.initAllHooks(loadPackageParam);
 
-        HttpHook.initAllHooks(loadPackageParam);
+//        HttpHook.initAllHooks(loadPackageParam);
+
+//        OKHttpHook.initAllHooks(loadPackageParam);
+
+//        CryptoHook.initAllHooks(loadPackageParam);
+
+//        CloudHook.initAllHooks(loadPackageParam);
+
+//        HashHook.initAllHooks(loadPackageParam);
     }
 
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();

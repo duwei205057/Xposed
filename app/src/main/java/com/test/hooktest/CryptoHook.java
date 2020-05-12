@@ -1,5 +1,6 @@
 package com.test.hooktest;
 
+import com.test.hooktest.utils.LogUtils;
 import com.test.hooktest.utils.Util;
 
 import java.security.SecureRandom;
@@ -21,95 +22,77 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
  */
 public class CryptoHook extends XC_MethodHook {
 
-    public static final String TAG = "Inspeckage_Crypto:";
-    private static StringBuffer sb;
+    public static final String TAG = "Crypto   :";
 
     public static void initAllHooks(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
 
-        findAndHookConstructor(SecretKeySpec.class, byte[].class, String.class, new XC_MethodHook() {
-
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-
-                sb = new StringBuffer();
-                sb.append("SecretKeySpec(" + Util.byteArrayToString((byte[]) param.args[0]) + ","+(String) param.args[1]+")");
-            }
-
-        });
+//        findAndHookConstructor(SecretKeySpec.class, byte[].class, String.class, new XC_MethodHook() {
+//
+//            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//
+//                LogUtils.log(TAG + "SecretKeySpec(" + Util.byteArrayToString((byte[]) param.args[0]) + ","+(String) param.args[1]+")");
+//            }
+//
+//        });
 
         findAndHookMethod(Cipher.class, "doFinal", byte[].class, new XC_MethodHook() {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                if (sb == null) {
-                    sb = new StringBuffer();
-                }
+                StringBuffer   sb = new StringBuffer();
                 sb.append(" (" + Util.byteArrayToString((byte[]) param.args[0]) + " , ");
                 sb.append(Util.byteArrayToString((byte[]) param.getResult()) + ")");
 
-                XposedBridge.log(TAG + sb.toString());
-                sb = new StringBuffer();
-            }
-
-        });
-
-        findAndHookMethod(Cipher.class, "getIV", new XC_MethodHook() {
-
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-
-                if (sb == null) {
-                    sb = new StringBuffer();
+                LogUtils.log(TAG +  sb.toString());
+                StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+                for (StackTraceElement ste : stes) {
+                    LogUtils.log(TAG + ste.getClassName()+ " " + ste.getMethodName()+" "+ ste.getLineNumber());
                 }
-                sb.append(" IV:" + (String) param.getResult());
             }
 
         });
 
-        findAndHookConstructor(IvParameterSpec.class, byte[].class, new XC_MethodHook() {
-
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-
-                if (sb == null) {
-                    sb = new StringBuffer();
-                }
-                sb.append(" IV: " + Util.byteArrayToString((byte[]) param.args[0]));
-            }
-        });
-
-        findAndHookMethod(SecureRandom.class, "setSeed", byte[].class, new XC_MethodHook() {
-
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-
-                if (sb == null) {
-                    sb = new StringBuffer();
-                }
-                sb.append(" Seed:" + Util.byteArrayToString((byte[]) param.args[0]));
-            }
-
-        });
+//        findAndHookMethod(Cipher.class, "getIV", new XC_MethodHook() {
+//
+//            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//
+//                LogUtils.log(TAG + " IV:" + (String) param.getResult());
+//            }
+//
+//        });
+//
+//        findAndHookConstructor(IvParameterSpec.class, byte[].class, new XC_MethodHook() {
+//
+//            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//
+//                LogUtils.log(TAG + " IV: " + Util.byteArrayToString((byte[]) param.args[0]));
+//            }
+//        });
+//
+//        findAndHookMethod(SecureRandom.class, "setSeed", byte[].class, new XC_MethodHook() {
+//
+//            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//
+//                LogUtils.log(TAG + " Seed:" + Util.byteArrayToString((byte[]) param.args[0]));
+//            }
+//
+//        });
 
         findAndHookMethod(Cipher.class, "getInstance", String.class, new XC_MethodHook() {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                if (sb == null) {
-                    sb = new StringBuffer();
-                }
                 //Transformation ex AES/CBC/PKCS7Padding
-                sb.append(" , Cipher[" + (String) param.args[0] + "] ");
+                LogUtils.log(TAG + " , Cipher[" + (String) param.args[0] + "] ");
             }
 
         });
 
-        findAndHookConstructor(PBEKeySpec.class, char[].class, byte[].class, int.class, int.class, new XC_MethodHook() {
-
-            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-                if (sb == null)
-                    sb = new StringBuffer();
-
-                sb.append("[PBEKeySpec] - Password: " + String.valueOf((char[])param.args[0]) + " || Salt: " +  Util.byteArrayToString((byte[])param.args[1]));
-                XposedBridge.log(TAG + sb.toString());
-                sb = new StringBuffer();
-            }
-        });
+//        findAndHookConstructor(PBEKeySpec.class, char[].class, byte[].class, int.class, int.class, new XC_MethodHook() {
+//
+//            protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+//                LogUtils.log(TAG + "[PBEKeySpec] - Password: " + String.valueOf((char[])param.args[0]) + " || Salt: " +  Util.byteArrayToString((byte[])param.args[1]));
+//            }
+//        });
     }
 }

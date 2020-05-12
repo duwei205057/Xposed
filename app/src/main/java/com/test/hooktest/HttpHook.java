@@ -41,7 +41,7 @@ public class HttpHook {
                         return;
                     }
 
-                    LogUtils.log(TAG + "HttpURLConnection: " + param.args[0] + "");
+                    LogUtils.log(TAG + "HttpURLConnection: Constructor " + param.args[0] + "");
                 }
             });
         } catch (Error e) {

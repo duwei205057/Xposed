@@ -1,5 +1,6 @@
 package com.test.hooktest;
 
+import com.test.hooktest.utils.LogUtils;
 import com.test.hooktest.utils.Util;
 
 import java.nio.ByteBuffer;
@@ -16,8 +17,7 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
  */
 public class HashHook extends XC_MethodHook {
 
-    public static final String TAG = "Inspeckage_Hash:";
-    private static StringBuffer sb;
+    public static final String TAG = "MessageDigest      :";
 
     public static void initAllHooks(final XC_LoadPackage.LoadPackageParam loadPackageParam) {
 
@@ -25,8 +25,7 @@ public class HashHook extends XC_MethodHook {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                sb = new StringBuffer();
-                sb.append("Algorithm(" +param.args[0]+") [");
+                LogUtils.log(TAG +  "Algorithm(" +param.args[0]+") [");
             }
         });
 
@@ -34,7 +33,7 @@ public class HashHook extends XC_MethodHook {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                sb.append("" + Util.byteArrayToString((byte[]) param.args[0])+" : ");
+                LogUtils.log(TAG + Util.byteArrayToString((byte[]) param.args[0])+" : ");
             }
 
         });
@@ -43,7 +42,7 @@ public class HashHook extends XC_MethodHook {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                sb.append("" + Util.byteArrayToString((byte[]) param.args[0])+" : ");
+                LogUtils.log(TAG + Util.byteArrayToString((byte[]) param.args[0])+" : ");
             }
 
         });
@@ -54,7 +53,7 @@ public class HashHook extends XC_MethodHook {
 
                 ByteBuffer bb = (ByteBuffer) param.args[0];
 
-                sb.append("" + Util.byteArrayToString(bb.array()) + " : ");
+                LogUtils.log(TAG + Util.byteArrayToString(bb.array()) + " : ");
             }
         });
 
@@ -63,10 +62,8 @@ public class HashHook extends XC_MethodHook {
 
             protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 
-                sb.append(Util.toHexString((byte[]) param.getResult())+"]");
 
-                XposedBridge.log(TAG + sb.toString());
-                sb = new StringBuffer();
+                LogUtils.log(TAG + Util.toHexString((byte[]) param.getResult())+"]");
             }
         });
 
