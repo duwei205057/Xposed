@@ -28,7 +28,7 @@ public class Main implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 //        CryptoHook.initAllHooks(loadPackageParam);
 
-//        CloudHook.initAllHooks(loadPackageParam);
+        CloudHook.initAllHooks(loadPackageParam);
 
 //        HashHook.initAllHooks(loadPackageParam);
     }

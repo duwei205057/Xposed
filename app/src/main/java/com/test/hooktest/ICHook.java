@@ -44,12 +44,6 @@ public class ICHook {
                 int.class,   // 参数1
                 int.class,   // 参数2
                 new XC_MethodHook() {
-                    @Override
-                    protected void beforeHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
-                        super.beforeHookedMethod(param);
-                        LogUtils.log(TAG + "  getTextBeforeCursor " + param.args[0]+" " + param.args[1] + " result=" + param.getResult());
-                    }
-                    @Override
                     protected void afterHookedMethod(XC_MethodHook.MethodHookParam param) throws Throwable {
                         super.afterHookedMethod(param);
                         param.setResult(param.getResult()+"sogousogou");

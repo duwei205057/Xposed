@@ -282,7 +282,7 @@ public class Util {
     public static void showBackTrace(){
         StackTraceElement[] stes = Thread.currentThread().getStackTrace();
         for (StackTraceElement ste : stes) {
-            LogUtils.log(ste.getClassName()+ " " + ste.getMethodName()+" "+ ste.getLineNumber()+" isNativeMethod="+ste.isNativeMethod());
+            LogUtils.log("TRACE-----------------------------------" + ste.getClassName()+ " " + ste.getMethodName()+" "+ ste.getLineNumber()+" isNativeMethod="+ste.isNativeMethod());
         }
     }
 }
