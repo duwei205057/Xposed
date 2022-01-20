@@ -11,7 +11,7 @@ import de.robv.android.xposed.XposedBridge;
 public class LogUtils {
 
     public static void log(String message) {
-        Log.d("mm", message);
+        Log.d("xx", message);
         XposedBridge.log(message);
     }
 

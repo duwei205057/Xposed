@@ -1,5 +1,7 @@
 package com.test.hooktest;
 
+import android.view.Choreographer;
+
 import com.test.hooktest.utils.LogUtils;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -20,7 +22,7 @@ public class Main implements IXposedHookLoadPackage, IXposedHookZygoteInit {
             return;
         LogUtils.log("Loaded app: " + loadPackageParam.packageName);
 
-        ICHook.initAllHooks(loadPackageParam);
+//        ICHook.initAllHooks(loadPackageParam);
 
 //        HttpHook.initAllHooks(loadPackageParam);
 
@@ -28,9 +30,15 @@ public class Main implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 //        CryptoHook.initAllHooks(loadPackageParam);
 
-        CloudHook.initAllHooks(loadPackageParam);
+//        CloudHook.initAllHooks(loadPackageParam);
 
 //        HashHook.initAllHooks(loadPackageParam);
+
+//        ViewHook.initAllHooks(loadPackageParam);
+
+        ChoreographerHook.initAllHooks(loadPackageParam);
+
+//        ActivityHook.initAllHooks(loadPackageParam);
     }
 
     public static final String MY_PACKAGE_NAME = Main.class.getPackage().getName();
