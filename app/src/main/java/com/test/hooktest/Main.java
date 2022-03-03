@@ -1,7 +1,5 @@
 package com.test.hooktest;
 
-import android.view.Choreographer;
-
 import com.test.hooktest.utils.LogUtils;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -13,12 +11,11 @@ public class Main implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
     public static final String PREFS = "";
     //被HOOK的程序的包名和类名
-    String packName1 = "com.baidu.input";
-    String packName2 = "com.sohu.inputmethod.sogou";
-    String className = "android.view.inputmethod.InputConnectionWrapper";
+    String sogouPackageName = "com.baidu.input";
+    String baiduPackageName = "com.sohu.inputmethod.sogou";
     @Override
     public void handleLoadPackage(XC_LoadPackage.LoadPackageParam loadPackageParam) throws Throwable {
-        if(!loadPackageParam.packageName.equals(packName1) && !loadPackageParam.packageName.equals(packName2))
+        if(!loadPackageParam.packageName.equals(sogouPackageName) && !loadPackageParam.packageName.equals(baiduPackageName))
             return;
         LogUtils.log("Loaded app: " + loadPackageParam.packageName);
 
@@ -36,7 +33,15 @@ public class Main implements IXposedHookLoadPackage, IXposedHookZygoteInit {
 
 //        ViewHook.initAllHooks(loadPackageParam);
 
-        ChoreographerHook.initAllHooks(loadPackageParam);
+//        ClassLoaderHook.initAllHooks(loadPackageParam);
+
+        ApplicationHook.initAllHooks(loadPackageParam);
+
+        InputMethodServiceHook.initAllHooks(loadPackageParam);
+
+        ThreadHook.initAllHooks(loadPackageParam);
+
+//        ChoreographerHook.initAllHooks(loadPackageParam);
 
 //        ActivityHook.initAllHooks(loadPackageParam);
     }
